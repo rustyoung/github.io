@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>nginx_3</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h2>nginx配置文件参数解析</h2>
+<h5>指定nginx进程运行用户以及用户组</h5>
+<pre><code>user www www;
+</code></pre>
+
+<h5>nginx要开启的进程数为8，设置为cpu核数即可</h5>
+<pre><code>worker_processes  8;
+</code></pre>
+
+<h5>全局错误日志文件</h5>
+<p>debug输出日志最为详细，而crit输出日志最少，/var/log目录是linux下的日志存放目录
+	error<em>log /var/log/nginx/nginx</em>error.log crit;</p>
+<h5>指定进程id的存储位置</h5>
+<pre><code>pid   /var/run/nginx.pid;
+</code></pre>
+
+<h5>绑定worker进程和CPU，linux内核2.4以上可用</h5>
+<pre><code>worker_rlimit_nofile 51200;
+</code></pre>
+
+<h5>nginx的工作模式及连接输上线</h5>
+<pre><code>events {
+    #nginx工作模式，epoll是linux平台下的高效模式
+    use epoll;
+    #定义nginx每个进程的最大连接数为51200
+    worker_connections  51200;
+}
+
+http {
+    #实现对配置文件所包含的文件的设定
+    include       mime.types;
+    #设置默认类型为二进制流
+    default_type  application/octet-stream;
+
+    server_names_hash_bucket_size  128;
+    #指定来自客户端请求头的headerbuffer大小，设置为32KB
+    client_header_buffer_size  32k;
+    #指定客户端请求中较大的消息头的缓存最大数量和大小，这里是4个32KB
+    large_client_header_buffers 4 32k;
+    #上传文件大小
+    client_max_body_size 356m;
+    #nginx的HttpLog模块指定，指定nginx日志的输出格式，输出格式为access
+    log_format access '$remote_addr - $remote_user [$time_local] &quot;$request&quot; '
+                  '$status $body_bytes_sent &quot;$http_referer&quot; '
+                  '&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;';
+    #access日志
+    access_log  /var/log/nginx/access.log  access;
+    #开启高效模式文件传输模式，将tcp_nopush和tcp_nodely两个指另设置为on，用于防止网络阻塞。
+    sendfile        on;
+    tcp_nopush      on;
+    tcp_nodely      on;
+    #设置客户端连接保持活动的超时时间
+    keepalive_timeout  65;
+    server_tokens   off;
+    #客户端请求主体读取缓存
+    client_body_buffer_size  512k;
+    proxy_connect_timeout    5;
+    proxy_send_timeout      60;
+    proxy_read_timeout       5;
+    proxy_buffer_size       16k;
+    proxy_buffers         4 64k;
+    proxy_busy_buffers_size  128k;
+    proxy_temp_file_write_size 128k;    
+
+    fastcgi_connect_timeout 300;
+    fastcgi_send_timeout    300;
+    fastcgi_read_timeout    300;
+    fastcgi_buffer_timeout  300;
+    fastcgi_buffers 4 64k;
+    fastcgi_busy_buffers_size 128k;
+    fastcgi_temp_file_write_size 128k;
+
+    #开启gzip
+    gzip  on;
+    #允许压缩的最小字节数
+    gzip_min_length 1k;
+    #4个单位为16k的内存作为压缩结果流缓存
+    gzip_buffers 4 16k;
+    #设置识别HTTP协议版本，默认是1.1
+    gzip_http_version 1.1;
+    #gzip压缩比，可在1~9中设置，1压缩比最小，速度最快，9压缩比最大，速度最慢，消耗CPU，建议4
+    gzip_comp_level  4;
+    #压缩的类型
+    gzip_types text/plain application/x-javascript text/css application/xml;
+    #和http头有关系，加个vary头，给代理服务器用的，有的浏览器支持压缩，有的不支持，所以避免浪费不支持的也压缩，所以根据客户端的HTTP头来判断，是否需要压缩
+    gzip_vary  on;
+
+    #负载均衡
+    upstream localhost.com {
+        #每个请求按照ip的hash结果分配，同一个ip的访客固定访问一个后端服务器，可解决动态网页session共享问题。
+        ip_hash;
+        server 127.0.0.1:8080;
+        server 127.0.0.1:8082;
+    }
+
+    #禁止通过ip访问
+    server {
+        server_name _;
+        return 404;
+    }
+
+    server {
+        listen       88;
+        server_name  www.test.com;# 对应你的域名
+        charset    utf-8; #设置编码为utf-8
+        index index.html index.htm index.jsp index.do index.action;
+        #指定虚拟主机根目录为/var/www/
+        root /var/www/;
+        if ( -d $request_filename) {
+            rewrite ^/(.*)([^/])$ http://$host/$1$2/permanent;
+        }
+        #方法1：将jsp等动态文件交给的localhost.com处理，此方法用的不多
+        location ~ \.(jsp|jspx|do|action)(\/.*)?$ {
+            index index.jsp;
+            proxy_set_header  Host $host;  
+            proxy_set_header  X-Real-IP  $remote_addr;
+            proxy_pass http://localhost.com;
+        } 
+        #方法2：将所有请求交给localhost.com处理，静态文件通过额外定义location交给nginx处理。
+        location / {
+            #当502或504时，将请求转发到负载均衡中正常server中
+            proxy_next_upstream http_502 http_504 error timeout invalid_header;
+            proxy_pass http://localhost.com;
+            proxy_redirect    off;
+            proxy_set_header Host  $host;
+            #若nginx为最前端时，后端获得X-Real-IP传递的ip即为实际ip，若nginx不是最前端时，实际ip为X-Forwarded-For值。
+            proxy_set_header X-Forwarded-For  $remote_addr;
+        }
+        #静态文件交给nginx处理
+        location ~ .*\.(htm|html|gif|jpg|jpeg|png|bmp|swf|ioc|rar|zip|txt|flv|mid|doc|ppt|pdf|xls|mp3|wma)$ {
+            root /var/www;
+            expires   30d;
+        }
+        #静态文件交给nginx处理
+        location ~ .*\.(js|css)?$ {
+            root /var/www;       
+            expires      1h;     
+        }
+        location /media {
+        #指定后端服务器地址和端口
+            proxy_pass         http://localhost.com;
+            #proxy_next_upstream 故障转移待空
+            proxy_redirect     off; 
+            #后端服务器获取用户的主机名或真实IP地址
+            proxy_set_header   Host            $host;
+            proxy_set_header   X-Real-IP       $remote_addr;
+            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+
+            #客户端请求主体缓冲区最大值
+            client_max_body_size       10m;
+            #客户端请求主体缓存区大小
+            client_body_buffer_size    128k;   
+            #与后端服务器连接的超时时间
+            proxy_connect_timeout      90;
+            #后端服务器的数据回传时间90s，90s内未传回，nginx将断开连接
+            proxy_send_timeout         90;   
+            #nginx从代理的后端服务器获取信息的时间90s
+            proxy_read_timeout         90;   
+            #缓冲区大小默认等于proxy_buffers设置的大小
+            proxy_buffer_size          4k;
+            #设置缓冲区的数量和大小
+            proxy_buffers              4 32k;
+            #设置系统很忙时可以使用的proxy_buffers的大小，官方推荐位proxy_buffersX2
+            proxy_busy_buffers_size    64k;   
+            #指定proxy缓存临时文件的大小
+            proxy_temp_file_write_size 64k;
+        }
+        location /files/ {
+            #静止外部访问
+            internal;
+            #
+            alias     /home/nfs/media/; 
+       }
+    }
+    # HTTPS server配置
+    server {
+        listen       443;
+        server_name  www.test.com; # 对应你的域名
+        root /var/www/webapps;
+
+        ssl on;
+        ssl_certificate      /usr/local/nginx/conf/test.crt;
+        ssl_certificate_key  /usr/local/nginx/conf/test_nopass.key;
+
+        ssl_session_timeout  5m;
+
+        ssl_protocols  SSLv2 SSLv3 TLSv1;
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers   on;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+    }
+}
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
