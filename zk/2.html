@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>zk</title>
+<title>2</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -291,9 +291,135 @@ img {
 </style>
 </head>
 <body>
-<h2>zookeeper文档</h2>
-<h4><a href="./zk/1.html">zookeeper安装及配置</a></h4>
-<h4><a href="./zk/2.html">zookeeper基本命令</a></h4>
+<h2>zookeeper基本命令</h2>
+<h6>使用zkCli连接：</h6>
+<pre><code>zkCli -server 127.0.0.1:2181
+</code></pre>
+
+<h6>help命令</h6>
+<p>列出所有命令</p>
+<pre><code>[zk: localhost:2181(CONNECTED) 0] help
+ZooKeeper -server host:port cmd args
+    stat path [watch]
+    set path data [version]
+    ls path [watch]
+    delquota [-n|-b] path
+    ls2 path [watch]
+    setAcl path acl
+    setquota -n|-b val path
+    history 
+    redo cmdno
+    printwatches on|off
+    delete path [version]
+    sync path
+    listquota path
+    rmr path
+    get path [watch]
+    create [-s] [-e] path data acl
+    addauth scheme auth
+    quit 
+    getAcl path
+    close 
+    connect host:port
+</code></pre>
+
+<h6>ls命令</h6>
+<p>获取路径下的节点信息，注意此路径为绝对路径</p>
+<pre><code>[zk: localhost:2181(CONNECTED) 1] ls /
+[zookeeper]
+</code></pre>
+
+<h6>create命令</h6>
+<p>创建节点，其中-s为顺序充点，-e临时节点(临时节点连接断开时数据就丢掉)</p>
+<pre><code>[zk: localhost:2181(CONNECTED) 3] create /zk test
+Created /zk
+[zk: localhost:2181(CONNECTED) 4] ls /
+[zk, zookeeper]
+
+//顺序充点
+[zk: localhost:2181(CONNECTED) 10] create -s /a 1
+Created /a0000000008
+[zk: localhost:2181(CONNECTED) 11] create -s /b 2
+Created /b0000000009
+</code></pre>
+
+<h6>get命令</h6>
+<p>获取节点信息，注意节点的路径皆为绝对路径</p>
+<pre><code>[zk: localhost:2181(CONNECTED) 5] get /zk
+test //节点数据信息
+cZxid = 0xb //节点创建时的zxid
+ctime = Sat Feb 10 16:05:21 EST 2018 //节点创建时间
+mZxid = 0xb //节点最近一次更新时的zxid
+mtime = Sat Feb 10 16:05:21 EST 2018 //节点最近一次更新的时间
+pZxid = 0xb //该节点的子节点（或该节点）的最近一次 创建 / 删除 的时间
+cversion = 0 //子节点数据更新次数
+dataVersion = 0 //本节点数据更新次数
+aclVersion = 0 //点ACL(授权信息)的更新次数
+ephemeralOwner = 0x0 //如果该节点为临时节点,ephemeralOwner值表示与该节点绑定的session id. 如果该节点不是临时节点,ephemeralOwner值为0
+dataLength = 4 //节点数据长度
+numChildren = 0 //子节点个数
+</code></pre>
+
+<h6>set命令</h6>
+<p>设置节点的数据</p>
+<pre><code>[zk: localhost:2181(CONNECTED) 6] set /zk hehe
+[zk: localhost:2181(CONNECTED) 7] get /zk
+hehe
+</code></pre>
+
+<h6>delete&amp;rmr命令</h6>
+<p>删除节点命令</p>
+<pre><code>[zk: localhost:2181(CONNECTED) 8] delete /zk
+[zk: localhost:2181(CONNECTED) 9] get /zk
+Node does not exist: /zk
+
+//注意：delete不可删除有子节点的节点，但是rmr命令可以删除
+[zk: localhost:2181(CONNECTED) 42] ls /zk
+[aa]
+[zk: localhost:2181(CONNECTED) 43] delete /zk
+Node not empty: /zk
+[zk: localhost:2181(CONNECTED) 44] rmr /zk
+[zk: localhost:2181(CONNECTED) 45] get /zk
+Node does not exist: /zk
+</code></pre>
+
+<h6>stat命令</h6>
+<p>查看节点状态信息</p>
+<h6>close命令</h6>
+<p>断开客户端与服务端的连接</p>
+<h6>ls2命令</h6>
+<p>ls2为ls命令的扩展，比ls命令多输出本节点信息</p>
+<h6>history命令</h6>
+<p>列出最近的历史命令</p>
+<h6>setAcl命令</h6>
+<p>设置节点Acl。</p>
+<pre><code>Acl由大部分组成：1为scheme，2为user，3为permission，一般情况下表示为scheme:id:permissions。
+</code></pre>
+
+<h6>getAcl命令</h6>
+<p>获取节点Acl</p>
+<h6>addauth命令</h6>
+<p>节点认证</p>
+<h6>sync命令</h6>
+<p>强制同步</p>
+<pre><code>由于请求在半数以上的zk server上生效就表示此请求生效，那么就会有一些zk server上的数据是旧的。sync命令就是强制同步所有的更新操作
+</code></pre>
+
+<h6>redo命令</h6>
+<p>再次执行某命令</p>
+<pre><code>如redo 10，其中10为命令ID，需与history配合使用
+</code></pre>
+
+<h6>setquota命令</h6>
+<p>设置子节点个数和数据长度配额</p>
+<pre><code>如setquota –n 4 /zookeeper/node 设置/zookeeper/node子节点个数最大为4
+setquota –b 100 /zookeeper/node 设置/zookeeper/node节点长度最大为100
+</code></pre>
+
+<h6>listquota命令</h6>
+<p>显示配额</p>
+<h6>delquota命令</h6>
+<p>删除配额，-n为子节点个数，-b为节点数据长度</p>
 
 </body>
 </html>
