@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>index</title>
+<title>1</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -291,18 +291,116 @@ img {
 </style>
 </head>
 <body>
-<h2>导航</h2>
-<h3><a href="./php.html">php文档</a></h3>
-<h3><a href="./mysql.html">mysql文档</a></h3>
-<h3><a href="./golang.html">golang文档</a></h3>
-<h3><a href="./mongodb.html">mongodb文档</a></h3>
-<h3><a href="./redis.html">redis文档</a></h3>
-<h3><a href="./nginx.html">nginx文档</a></h3>
-<h3><a href="./centos.html">centos文档</a></h3>
-<h3><a href="./elk.html">elk文档</a></h3>
-<h3><a href="./git.html">git文档</a></h3>
-<h3><a href="./zk.html">zookeeper文档</a></h3>
-<h3><a href="./other.html">杂七杂八文档</a></h3>
+<h2>zookeeper安装及配置</h2>
+<h4>zookeeper安装</h4>
+<h6>下载zookeeper：</h6>
+<pre><code>curl -O http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.11/zookeeper-3.4.11.tar.gz
+</code></pre>
+
+<h6>安装过程：</h6>
+<pre><code>tar zxvf zookeeper-3.4.11.tar.gz
+mv zookeeper-3.4.11 /usr/local/zookeeper
+
+//将zookeeper加到系统环境变量里
+vim /etc/profile
+export PATH=&quot;$PATH:/usr/local/zookpeer/bin&quot;
+
+cd /usr/local/zookeeper/bin
+ln -s zkServer.sh zkServer
+ln -s zkCli.sh zkCli
+
+//创建一个配置文件
+cd ../config
+cp zoo_sample.cfg zoo.cfg
+
+//启动zookeeper
+zkServer start
+</code></pre>
+
+<h4>zookeeper伪集群搭建</h4>
+<h6>首先，创建3个不同的配置文件</h6>
+<pre><code>cd /usr/local/zookeeper/conf
+cp zoo.cfg zoo1.cfg
+cp zoo.cfg zoo2.cfg
+cp zoo.cfg zoo3.cfg
+</code></pre>
+
+<h6>接着，分别修改每个配置文件</h6>
+<p>zoo1.cfg如下：</p>
+<pre><code>tickTime=2000 //Zookeeper服务器之间或客户端与服务器之间维持心跳的时间间隔
+initLimit=10 //允许follower(相对于Leaderer言的“客户端”)连接并同步到Leader的初始化连接时间，以tickTime为单位。当初始化连接时间超过该值，则表示连接失败
+syncLimit=5 //表示Leader与Follower之间发送消息时，请求和应答时间长度。如果follower在设置时间内不能与leader通信，那么此follower将会被丢弃
+maxClientCnxns=100 //限制连接到Zookeeper的客户端数量
+dataDir=/tmp/zk/data_1 //存储内存中数据库快照的位置
+clientPort=2281 //监听客户端连接的端口
+dataLogDir=/tmp/zk/logs_1 //事务日志目录
+server.0=localhost:2287:3387 //0是服务器编号，localhost是服务器地址，2287是leader选举的端口，3387是服务器之间通信的端口
+server.1=localhost:2288:3388
+server.2=localhost:2289:3389
+</code></pre>
+
+<p>zoo2.cfg如下：</p>
+<pre><code>tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=/tmp/zk/data_2
+clientPort=2282
+dataLogDir=/tmp/zk/logs_2
+server.0=localhost:2287:3387
+server.1=localhost:2288:3388
+server.2=localhost:2289:3389
+</code></pre>
+
+<p>zoo3.cfg如下：</p>
+<pre><code>tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=/tmp/zk/data_3
+clientPort=2283
+dataLogDir=/tmp/zk/logs_3
+server.0=localhost:2287:3387
+server.1=localhost:2288:3388
+server.2=localhost:2289:3389
+</code></pre>
+
+<h6>然后，分别启动</h6>
+<p>myid的数值与配置文件server后面的为基准</p>
+<pre><code>cd /tmp/zk/data_1
+echo 0 &gt; myid
+
+cd /tmp/zk/data_2
+echo 1 &gt; myid
+
+cd /tmp/zk/data_3
+echo 2 &gt; myid
+
+cd /usr/local/zookpeer/conf
+zkServer start zoo1.cfg
+zkServer start zoo2.cfg
+zkServer start zoo3.cfg
+</code></pre>
+
+<p>注意：</p>
+<pre><code>启动后如果发现服务并没有启动，打开zookeeper.out查找原因
+</code></pre>
+
+<h6>查看状态</h6>
+<pre><code>zkServer status zoo1.cfg
+    ZooKeeper JMX enabled by default
+    Using config: /usr/local/zookeeper/bin/../conf/zoo1.cfg
+    Mode: follower
+
+zkServer status zoo2.cfg
+    ZooKeeper JMX enabled by default
+    Using config: /usr/local/zookeeper/bin/../conf/zoo2.cfg
+    Mode: leader
+
+zkServer status zoo3.cfg
+    ZooKeeper JMX enabled by default
+    Using config: /usr/local/zookeeper/bin/../conf/zoo3.cfg
+    Mode: follower
+</code></pre>
+
 
 </body>
 </html>
