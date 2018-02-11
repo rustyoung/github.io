@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>zk</title>
+<title>3</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -291,11 +291,71 @@ img {
 </style>
 </head>
 <body>
-<h2>zookeeper文档</h2>
-<h4><a href="./zk/1.html">zookeeper安装及配置</a></h4>
-<h4><a href="./zk/2.html">zookeeper基本命令</a></h4>
-<h4><a href="./zk/3.html">zookeeper权限控制</a></h4>
-<h4><a href="./zk/4.html">zookeeper的应用</a></h4>
+<h2>zookeeper权限访问控制</h2>
+<p>ZooKeeper 使用ACL进行访问控制。在Zookeeper中，node的ACL是没有继承关系的，是独立控制的。Zookeeper的ACL，可以从三个维度来理解：一是scheme；二是user； 三是permission，通常表示为scheme:id:permissions。</p>
+<h6>内置的 ACL schemes</h6>
+<ul>
+<li><strong>world</strong> 有个唯一的id ， anyone ，代表所有人。</li>
+<li><strong>auth</strong> 不使用任何id，代表任何已认证的用户。</li>
+<li><strong>digest</strong> 用 username:password 字符串来产生一个MD5串，然后该串被用来作为ACL ID。认证是通过明文发送username:password 来进行的，当用在ACL时，表达式为username:base64 ，base64是password的SHA1摘要的编码。</li>
+<li><strong>ip</strong> 它对应的id为客户机的IP地址，设置的时候可以设置一个ip段，比如ip:192.168.1.0/16, 表示匹配前16个bit的IP段。</li>
+<li><strong>super</strong>: 在这种scheme情况下，对应的id拥有超级权限，可以做任何事情(cdrwa)。</li>
+<li><strong>sasl</strong>: sasl的对应的id，是一个通过sasl authentication用户的id，zookeeper-3.4.4中的sasl authentication是通过kerberos来实现的，也就是说用户只有通过了kerberos认证，才能访问它有权限的node。</li>
+</ul>
+<h6>ZooKeeper 支持以下权限(Permission)：</h6>
+<ul>
+<li><strong>CREATE</strong>: 能创建子节点</li>
+<li><strong>READ</strong>：能获取节点数据和列出其子节点</li>
+<li><strong>WRITE</strong>: 能设置节点数据</li>
+<li><strong>DELETE</strong>: 能删除子节点</li>
+<li><strong>ADMIN</strong>: 能设置权限</li>
+</ul>
+<h6>实际演示</h6>
+<pre><code>//默认world
+[zk: localhost:2181(CONNECTED) 14] create /test_default default
+Created /test_default
+[zk: localhost:2181(CONNECTED) 15] getAcl /test_default
+'world,'anyone
+: cdrwa
+
+//将权限修改为cd
+[zk: localhost:2181(CONNECTED) 20] setAcl /test_default world:anyone:cd
+[zk: localhost:2181(CONNECTED) 21] getAcl /test_default
+'world,'anyone
+: cd
+
+//不能获取节点数据了
+[zk: localhost:2181(CONNECTED) 22] get /test_default
+Authentication is not valid : /test_default
+
+//使用auth认证，需要事先创建好auth
+[zk: localhost:2181(CONNECTED) 35] addauth digest admin:111111
+[zk: localhost:2181(CONNECTED) 36] create /test_auth auth auth:admin:111111:cd
+Created /test_auth
+
+//查看权限
+[zk: localhost:2181(CONNECTED) 38] getAcl /test_auth
+'digest,'a:3OptnM09ILoVSfbZtd3mB0IViII=
+: cd
+'digest,'admin:015uTByzA4zSglcmseJsxTo7n3c=
+: cd
+
+//不能读取节点数据
+[zk: localhost:2181(CONNECTED) 12] get /test_auth
+Authentication is not valid : /test_auth
+
+//ip认证
+[zk: localhost:2181(CONNECTED) 13] create /test_ip ip ip:192.168.1.1:cdrw
+Created /test_ip
+[zk: localhost:2181(CONNECTED) 14] getAcl /test_ip 
+'ip,'192.168.1.1
+: cdrw
+
+//本机ip读取不到数据
+[zk: localhost:2181(CONNECTED) 15] get /test_ip
+Authentication is not valid : /test_ip
+</code></pre>
+
 
 </body>
 </html>
