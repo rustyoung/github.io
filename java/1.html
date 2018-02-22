@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>index</title>
+<title>1</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -291,19 +291,140 @@ img {
 </style>
 </head>
 <body>
-<h2>导航</h2>
-<h3><a href="./php.html">php文档</a></h3>
-<h3><a href="./mysql.html">mysql文档</a></h3>
-<h3><a href="./golang.html">golang文档</a></h3>
-<h3><a href="./mongodb.html">mongodb文档</a></h3>
-<h3><a href="./redis.html">redis文档</a></h3>
-<h3><a href="./nginx.html">nginx文档</a></h3>
-<h3><a href="./centos.html">centos文档</a></h3>
-<h3><a href="./elk.html">elk文档</a></h3>
-<h3><a href="./git.html">git文档</a></h3>
-<h3><a href="./zk.html">zookeeper文档</a></h3>
-<h3><a href="./java.html">java文档</a></h3>
-<h3><a href="./other.html">杂七杂八文档</a></h3>
+<h2>java多线程篇</h2>
+<h4>多线程有什么用</h4>
+<ol>
+<li>提高系统的吞吐率</li>
+<li>提高响应性</li>
+<li>充分利用多核处理器资源</li>
+<li>最小化对系统资源的使用</li>
+<li>简化程序的结构</li>
+</ol>
+<h4>多线程的问题与风险</h4>
+<ol>
+<li>线程安全问题</li>
+<li>线程活性问题</li>
+<li>上下文切换</li>
+<li>可靠性</li>
+</ol>
+<h4>线程与进程的区别</h4>
+<ul>
+<li>进程是程序运行的实例，一个进程可以包含多个线程，这些线程共享其所在进程的资源</li>
+<li>线程是进程中可独立执行的最小单位</li>
+</ul>
+<h4>java实习线程的几种方式</h4>
+<ol>
+<li>继承Thread类</li>
+<li>实现Runnable接口</li>
+<li>实现Callable接口</li>
+<li>使用ExecutorService</li>
+</ol>
+<h4>启动线程的start()和run()方法的区别</h4>
+<pre><code>start()是启动线程，run()是当成普通方法调用
+</code></pre>
+
+<h4>怎么终止一个线程？如何优雅的终止线程？</h4>
+<ul>
+<li>使用volatile变量标志进行控制(优雅)</li>
+<li>使用interrupt()中断方法</li>
+</ul>
+<h4>一个线程的生命周期有哪几种状态？之间如何流转？</h4>
+<ul>
+<li><strong>NEW</strong> (已创建而未启动的线程)</li>
+<li><strong>RUNNABLE</strong> (包含<strong>READY<strong>和</strong>RUNNING</strong>)</li>
+<li><strong>BLOCKED</strong> (发起阻塞式I/O操作或申请独占资源等待时)</li>
+<li><strong>WAITING</strong> (<strong>Object.wait()</strong>, <strong>Thread.join()</strong>, <strong>LockSupport.park(Object)</strong>时)</li>
+<li><strong>TIMED_WAITING</strong> (带有时间限制的<strong>WAITING</strong>)</li>
+<li><strong>TERMINATED</strong> (已经执行结束的线程)</li>
+</ul>
+<h4>线程中wait()和sleep()方法的区别</h4>
+<ol>
+<li>sleep()方法可以在任何地方调用，wait()方法只能在同步块或同步方法中调用</li>
+<li>sleep()方法主动让出cpu，指定时间后cpu回到该线程继续执行，不会释放同步资源锁；wait()则是让出同步资源锁，让其他正在等待该同步资源锁的线程执行，只有调用了notify()方法，之前wait()的线程才会解除wait状态，去参与同步资源锁的竞争，进而得到执行</li>
+</ol>
+<h4>多线程同步有哪几种方法</h4>
+<ol>
+<li>同步方法</li>
+<li>同步代码块</li>
+<li>使用volatile</li>
+<li>使用锁</li>
+<li>使用局部变量</li>
+</ol>
+<h4>什么是死锁？如何避免死锁？</h4>
+<p>两个或更多的线程相互等待对方而被永远暂停，那么就可以称这些线程产生死锁。</p>
+<h6>规避死锁常见方法：</h6>
+<ul>
+<li>粗锁法——使用一个粗粒度的锁代替多个锁</li>
+<li>锁排序法——相关线程使用全局统一的顺序申请锁</li>
+<li>使用ReentrantLock.tryLock(long,TimeUnit)来申请锁</li>
+<li>使用开放调用——在调用外部方法时不加锁</li>
+<li>使用锁的替代品</li>
+</ul>
+<h4>多线程之间如何通信</h4>
+<ol>
+<li>同步</li>
+<li>while循环</li>
+<li>wait/notify机制</li>
+<li>管道通信</li>
+</ol>
+<h4>线程怎样拿到返回结果</h4>
+<pre><code>实现Callable接口，通过FutureTask获取
+</code></pre>
+
+<h4>volatile关键字的作用</h4>
+<ol>
+<li>保障内存可见性</li>
+<li>保障有序性</li>
+<li>保障long/double型变量读写操作的原子性</li>
+</ol>
+<h4>新建T1,T2,T3三个线程，如何保证它们顺序执行？</h4>
+<pre><code>通过Thread.join()进行控制
+</code></pre>
+
+<h4>怎么控制同一时间只有3个线程运行？</h4>
+<pre><code>通过Semaphore控制或用Executors.newFixedThreadPool(3)
+</code></pre>
+
+<h4>为什么要使用线程池？</h4>
+<ol>
+<li>减少创建和销毁线程的次数，节省开销</li>
+<li>根据系统承受能力调整工作线程数量，防止拖垮系统</li>
+</ol>
+<h4>常见的几种线程池并讲讲其中的工作原理</h4>
+<h6>newCachedThreadPool</h6>
+<pre><code>创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。
+
+这种类型的线程池特点是：
+
+工作线程的创建数量几乎没有限制(其实也有限制的,数目为Interger.MAX_VALUE), 这样可灵活的往线程池中添加线程。
+如果长时间没有往线程池中提交任务，即如果工作线程空闲了指定的时间(默认为1分钟)，则该工作线程将自动终止。
+终止后，如果你又提交了新的任务，则线程池重新创建一个工作线程。
+在使用CachedThreadPool时，一定要注意控制任务的数量，否则，由于大量线程同时运行，很有会造成系统瘫痪。
+</code></pre>
+
+<h6>newFixedThreadPool</h6>
+<pre><code>创建一个指定工作线程数量的线程池。每当提交一个任务就创建一个工作线程，如果工作线程数量达到线程池初始的最大数，则将提交的任务存入到池队列中。
+</code></pre>
+
+<h6>newSingleThreadExecutor</h6>
+<pre><code>创建一个单线程化的Executor，即只创建唯一的工作者线程来执行任务，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。
+如果这个线程异常结束，会有另一个取代它，保证顺序执行。单工作线程最大的特点是可保证顺序地执行各个任务，并且在任意给定的时间不会有多个线程是活动的。
+</code></pre>
+
+<h6>newScheduleThreadPool</h6>
+<pre><code>创建一个定长的线程池，而且支持定时的以及周期性的任务执行，支持定时及周期性任务执行。
+</code></pre>
+
+<h4>线程池启动线程的submit()和execute()方法有什么不同？</h4>
+<pre><code>submit()有返回值，而execute()没有
+</code></pre>
+
+<h4>CyclicBarrier和CountDownLatch的区别</h4>
+<pre><code>| CyclicBarrier | CountDownLatch |
+| 加计数方式     | 减计数方式      |
+| 可重复         | 不可重复        |
+</code></pre>
+
 
 </body>
 </html>
